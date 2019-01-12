@@ -1,0 +1,26 @@
+<div class="panel panel-info">
+  <div class="panel-heading">New user</div>
+  <div class="panel-body">
+    <form>
+      <p><qrcode size="200" error-correction-level="L" data="{{ qrcode }}"></qrcode></p>
+      <div class="form-group input-group">
+        <div class="input-group-addon"><i class="fa fa-fw fa-at"></i></div>
+        <input type="text" class="form-control" placeholder="Pseudo" ng-model="pseudo" disabled />
+      </div>
+      <div class="form-group input-group">
+        <div class="input-group-addon"><i class="fa fa-fw fa-lock"></i></div>
+        <input type="password" class="form-control" placeholder="Password" ng-model="passwd" required />
+      </div>
+      <div class="form-group input-group">
+        <div class="input-group-addon"><i class="fa fa-fw fa-lock"></i></div>
+        <input type="password" class="form-control" placeholder="Confirm password" ng-model="passwd2" required />
+      </div>
+      <div class="form-group input-group">
+        <div class="input-group-addon"><i class="fa fa-fw fa-qrcode"></i></div>
+        <input type="text" class="form-control" placeholder="G-OTP" ng-model="gotp" required />
+      </div>
+      <button type="submit" class="btn btn-primary" ng-click="generate(pseudo, passwd, passwd2, gotp)">Create</button>
+    </form>
+    <p><div class="alert alert-danger" role="alert" ng-show="error">{{ error }}</div></p>
+  </div>
+</div>

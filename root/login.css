@@ -1,0 +1,39 @@
+body {
+/*    background: url(background.jpeg) no-repeat center center fixed;  */
+    background-size: cover;
+}
+
+.wa-app {
+    position: absolute;
+    right: 38px;
+    top: 15px;
+    width: 65px;
+    height: 46px;
+    border-radius: 20%;
+    z-index: 2;
+    transition: 0.3s;
+}
+.wa-app:hover {
+    width: 85px;
+}
+
+.wa-acc {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    z-index: 2;
+    transition: 0.3s;
+}
+
+.wa-acc img {
+    position: relative;
+    left: -11px;
+    top: -5px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
