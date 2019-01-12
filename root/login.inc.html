@@ -1,0 +1,19 @@
+<div class="card">
+  <div class="card-header">Authentication</div>
+  <form class="card-body">
+    <div class="form-group input-group">
+      <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-fw fa-user"></i></span></div>
+      <input type="text" class="form-control" placeholder="Pseudo" ng-model="pseudo" required />
+    </div>
+    <div class="form-group input-group">
+      <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-fw fa-lock"></i></span></div>
+      <input type="password" class="form-control" placeholder="Password" ng-model="passwd" required />
+    </div>
+    <div class="form-group input-group">
+      <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-fw fa-qrcode"></i></span></div>
+      <input type="text" class="form-control" placeholder="G-OTP" ng-model="gotp" required />
+    </div>
+    <button type="submit" class="btn btn-primary" ng-click="login(pseudo, passwd, gotp)">Login</button>
+  </form>
+  <div class="alert alert-danger" role="alert" ng-show="error">{{ error }}</div>
+</div>
