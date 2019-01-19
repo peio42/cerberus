@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/peio42/cerberus.svg?branch=master)](https://travis-ci.org/peio42/cerberus) [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=org.blutch%3Acerberus&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.blutch%3Acerberus)
 
 # Blutch Cerberus
 
