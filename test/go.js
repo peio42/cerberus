@@ -290,9 +290,9 @@ describe('/api/list', function () {
 
   it('should return current user\'s sessions', function () {
     let user = $.addUser("P", "Phosphorus", "30.9738");
-    let session1 = $.addSession(user.pseudo);
+    /* let session1 = */ $.addSession(user.pseudo);
     let session2 = $.addSession(user.pseudo);
-    let session3 = $.addSession(user.pseudo);
+    /* let session3 = */ $.addSession(user.pseudo);
 
     return $.get('/api/list', session2.token).then(function (res) {
       expect(res.statusCode).to.equal(200);
@@ -300,7 +300,7 @@ describe('/api/list', function () {
       let c = res.body.find(function (el) { return el.current === true });
       expect(c).to.not.be.undefined;
       expect(session2._id.equals(c._id)).to.be.true;
-      for (s of res.body)
+      for (let s of res.body)
         expect(s.pseudo).to.equal(user.pseudo);
     });
   });
@@ -341,9 +341,9 @@ describe('/api/flush', function () {
 
   it('should remove all but current sessions', function () {
     let user = $.addUser("Cl", "Chlorine", "35.453");
-    let session1 = $.addSession(user.pseudo);
+    /* let session1 = */ $.addSession(user.pseudo);
     let session2 = $.addSession(user.pseudo);
-    let session3 = $.addSession(user.pseudo);
+    /* let session3 = */ $.addSession(user.pseudo);
 
     return $.get('/api/flush', session2.token).then(function (res) {
       expect(res.statusCode).to.equal(204);
