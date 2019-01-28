@@ -54,26 +54,26 @@ app.use(function (req, res, next) {
 });
 
 
-app.get('/auth', function(req, res) {
+app.get('/auth', function (req, res) {
   res.sendStatus(req.session ? 204 : 401);
 });
 
 
-app.get('/api/info', function(req, res) {
+app.get('/api/info', function (req, res) {
   res.json(req.session ? { name: req.session.name, pseudo: req.session.pseudo, token: req.session.token } : {});
 });
 
 
-app.post('/api/prelogin', function(req, res) {
+app.post('/api/prelogin', function (req, res) {
   if ((req.body.l === undefined) || (typeof req.body.l !== 'string'))
     return res.sendStatus(400);
 
-  c = crypto.randomBytes(32).toString('hex');
+  let c = crypto.randomBytes(32).toString('hex');
   users.updateOne({ pseudo: req.body.l }, {$set: {c: c}});
   res.json({ c: c });
 });
 
-app.post('/api/login', function(req, res) {
+app.post('/api/login', function (req, res) {
   if ((req.body.l === undefined) || (typeof req.body.l !== 'string') ||
       (req.body.r === undefined) || (typeof req.body.r !== 'string') ||
       (req.body.g === undefined) || (typeof req.body.g !== 'string'))
@@ -106,14 +106,14 @@ app.post('/api/login', function(req, res) {
   });
 });
 
-app.get('/api/logout', function(req, res) {
+app.get('/api/logout', function (req, res) {
   if (req.session)
     sessions.deleteOne({ _id: req.session._id });
   res.sendStatus(204);
 });
 
 
-app.post('/api/geninfo', function(req, res) {
+app.post('/api/geninfo', function (req, res) {
   if ((req.body.gid === undefined) || (typeof req.body.gid !== 'string'))
     return res.sendStatus(400);
 
@@ -125,7 +125,7 @@ app.post('/api/geninfo', function(req, res) {
   });
 });
 
-app.post('/api/generate', function(req, res) {
+app.post('/api/generate', function (req, res) {
   if ((req.body.gid === undefined) || (typeof req.body.gid !== 'string') ||
       (req.body.g === undefined) || (typeof req.body.g !== 'string') ||
       (req.body.k === undefined) || (typeof req.body.k !== 'string'))
@@ -153,7 +153,7 @@ app.post('/api/generate', function(req, res) {
 });
 
 
-app.get('/api/list', function(req, res) {
+app.get('/api/list', function (req, res) {
   if (! req.session)
     return res.sendStatus(401);
 
@@ -163,7 +163,7 @@ app.get('/api/list', function(req, res) {
   });
 });
 
-app.post('/api/remove', function(req, res) {
+app.post('/api/remove', function (req, res) {
   if (! req.session)
     return res.sendStatus(401);
 
@@ -174,7 +174,7 @@ app.post('/api/remove', function(req, res) {
   res.sendStatus(204);
 });
 
-app.get('/api/flush', function(req, res) {
+app.get('/api/flush', function (req, res) {
   if (! req.session)
     return res.sendStatus(401);
 
@@ -183,13 +183,13 @@ app.get('/api/flush', function(req, res) {
 });
 
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.status(500).json({ error: 'Erreur interne..' });
 });
 
 
-mongo.connect('mongodb://localhost:27017', { useNewUrlParser: true }).then(function(client) {
+mongo.connect('mongodb://localhost:27017', { useNewUrlParser: true }).then(function (client) {
   db = client.db('cerberus');
   users = db.collection('users');
   sessions = db.collection('sessions');
@@ -211,7 +211,7 @@ mongo.connect('mongodb://localhost:27017', { useNewUrlParser: true }).then(funct
     console.log('Graceful shutdown..');
     if (process.env.NODE_ENV !== 'test')
       fs.unlinkSync(socket);
-    server.close(function(err) {
+    server.close(function (err) {
       if (err) {
         console.error(err);
         process.exit(1);
