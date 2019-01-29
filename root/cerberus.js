@@ -29,9 +29,9 @@ angular.module('cerberus', [ 'ngCookies', 'ui.router', 'LocalStorageModule', 'mo
     const domain = '.' + window.location.hostname.split('.').slice(-2).join('.');
     var authInfo;
 
-    if (localStorageService.isSupported && (authInfo = localStorageService.get('authInfo'))) {
+    if (localStorageService.isSupported && (authInfo = localStorageService.get('authInfo')))
       $cookies.put('cerberus', authInfo.token, { expires: (new Date().getTime() + 42*24*3600*1000), domain: domain });
-    } else
+    else
       authInfo = { };
 
     return {
