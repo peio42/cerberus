@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'test')
   socket = 3080;
 else {
   socket = __dirname + '/run/socket';
-
+  console.log('foo bar');
   process.umask(0);
   if (fs.existsSync(socket)) {
     if (child_process.spawnSync('/bin/fuser', [ socket ]).stdout.toString()) {
