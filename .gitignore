@@ -1,3 +1,6 @@
-/.settings/
-/.project
-/node_modules/
+.project
+.settings/
+.nyc_output/
+.scannerwork/
+coverage/
+node_modules/
