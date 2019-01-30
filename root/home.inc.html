@@ -3,7 +3,7 @@
   <table class="table">
     <tbody>
       <tr ng-repeat="s in sessions">
-        <td><i class="fa fa-5x fa-pull-left fa-border fa-{{ s.deviceType }}"></i></td>
+        <td><i class="fa fa-5x fa-pull-left fa-border fa-{{ s.deviceType }}" aria-hidden="true" ></i></td>
         <td>
           <p>{{ s.ua.os.name }} {{ s.ua.os.version }} / {{ s.ua.browser.name }} {{ s.ua.browser.version }}
             <small class="pull-right">{{ s.location }}</small></p>
