@@ -1,3 +1,4 @@
+/* global angular, sjcl, UAParser */
 angular.module('cerberus', [ 'ngCookies', 'ui.router', 'LocalStorageModule', 'monospaced.qrcode' ])
 
   .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -54,7 +55,7 @@ angular.module('cerberus', [ 'ngCookies', 'ui.router', 'LocalStorageModule', 'mo
 
       logout: function () {
         return $q(function (resolve, reject) {
-          $http.get('/api/logout').then(function (resp) {
+          $http.get('/api/logout').then(function (_resp) {
             clearAuthInfo();
             resolve();
           }, function (resp) {
@@ -106,13 +107,13 @@ angular.module('cerberus', [ 'ngCookies', 'ui.router', 'LocalStorageModule', 'mo
 
   .controller('WidgetController', ['$scope', '$state', 'auth', function ($scope, $state, auth) {
     $scope.auth = auth;
-    $scope.logout = function () { auth.logout().then(function () { $state.go('login'); }) };
+    $scope.logout = function () { auth.logout().then(function () { $state.go('login'); }); };
   }])
 
   .controller('HomeController', ['$scope', '$state', '$http', 'auth', function ($scope, $state, $http, auth) {
     refresh();
-    $scope.disconnect = function (sid) { $http.post('/api/remove', { sid: sid }).then(refresh) };
-    $scope.flush = function () { $http.get('/api/flush').then(refresh) };
+    $scope.disconnect = function (sid) { $http.post('/api/remove', { sid: sid }).then(refresh); };
+    $scope.flush = function () { $http.get('/api/flush').then(refresh); };
 
     function refresh() {
       $http.get('/api/list').then(
@@ -147,7 +148,7 @@ angular.module('cerberus', [ 'ngCookies', 'ui.router', 'LocalStorageModule', 'mo
           else
             $state.go('home');
         },
-        function (error) { $scope.error = error }
+        function (error) { $scope.error = error; }
       );
     };
     $scope.redirect = $cookies.get('redirect');
@@ -163,12 +164,12 @@ angular.module('cerberus', [ 'ngCookies', 'ui.router', 'LocalStorageModule', 'mo
         $scope.pseudo = resp.data.pseudo;
         $scope.qrcode = resp.data.qrcode;
       },
-      function (resp) { $state.go('login'); }
+      function (_resp) { $state.go('login'); }
     );
 
     $scope.generate = function (pseudo, passwd, passwd2, gotp) {
       if (passwd != passwd2) {
-        $scope.error = "Passwords don't match";
+        $scope.error = 'Passwords don\'t match';
         return ;
       }
       delete $scope.error;
