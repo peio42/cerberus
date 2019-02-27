@@ -3,6 +3,8 @@ dist: xenial
 node_js:
   - "7"
 cache: npm
+git:
+  depth: false
 addons:
   sonarcloud:
     organization: peio42-github
