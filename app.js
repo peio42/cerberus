@@ -8,7 +8,7 @@ const express = require('express');
 const { parse } = require('cookie');
 const { MongoClient } = require('mongodb');
 const { randomBytes } = require('crypto');
-const { verify } = require('secp256k1');
+const { verify, signatureNormalize } = require('secp256k1');
 const { authenticator: totp } = require('otplib');
 const path = require('path');
 
@@ -87,7 +87,7 @@ app.post('/api/login', (req, res) => {
 
     users.updateOne({ pseudo: u.pseudo }, { $unset: { c: true } });
 
-    if (! verify(Buffer.from(u.c, 'hex'), Buffer.from(req.body.r, 'hex'), Buffer.from(u.pkey, 'hex'))) {
+    if (! verify(Buffer.from(u.c, 'hex'), signatureNormalize(Buffer.from(req.body.r, 'hex')), Buffer.from(u.pkey, 'hex'))) {
       console.log('Invalid password for user ' + u.pseudo);
       return res.sendStatus(401);
     }

@@ -1,7 +1,7 @@
 /* global angular, sjcl, UAParser */
 angular.module('cerberus', [ 'ngCookies', 'ui.router', 'LocalStorageModule', 'monospaced.qrcode' ])
 
-  .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+  .config([ '$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
@@ -31,7 +31,7 @@ angular.module('cerberus', [ 'ngCookies', 'ui.router', 'LocalStorageModule', 'mo
     var authInfo;
 
     if (localStorageService.isSupported && (authInfo = localStorageService.get('authInfo')))
-      $cookies.put('cerberus', authInfo.token, { expires: (new Date().getTime() + 42*24*3600*1000), domain: domain });
+      $cookies.put('cerberus', authInfo.token, { expires: new Date(new Date().getTime() + 42*24*3600*1000), domain: domain });
     else
       authInfo = { };
 
@@ -94,7 +94,7 @@ angular.module('cerberus', [ 'ngCookies', 'ui.router', 'LocalStorageModule', 'mo
       authInfo = info;
       if (localStorageService.isSupported)
         localStorageService.set('authInfo', info);
-      $cookies.put('cerberus', info.token, { expires: (new Date().getTime() + 42*24*3600*1000), domain: domain });
+      $cookies.put('cerberus', info.token, { expires: new Date(new Date().getTime() + 42*24*3600*1000), domain: domain });
     }
 
     function clearAuthInfo() {
@@ -107,16 +107,16 @@ angular.module('cerberus', [ 'ngCookies', 'ui.router', 'LocalStorageModule', 'mo
 
   .controller('WidgetController', ['$scope', '$state', 'auth', function ($scope, $state, auth) {
     $scope.auth = auth;
-    $scope.logout = function () { auth.logout().then(function () { $state.go('login'); }); };
+    $scope.logout = function () { return auth.logout().then(function () { $state.go('login'); }); };
   }])
 
   .controller('HomeController', ['$scope', '$state', '$http', 'auth', function ($scope, $state, $http, auth) {
     refresh();
-    $scope.disconnect = function (sid) { $http.post('/api/remove', { sid: sid }).then(refresh); };
-    $scope.flush = function () { $http.get('/api/flush').then(refresh); };
+    $scope.disconnect = function (sid) { $http.post('/api/remove', { sid: sid }).then(refresh, error); };
+    $scope.flush = function () { $http.get('/api/flush').then(refresh, error); };
 
     function refresh() {
-      $http.get('/api/list').then(
+      return $http.get('/api/list').then(
         function (resp) {
           $scope.sessions = resp.data;
           $scope.sessions.forEach(function (s) {
@@ -127,24 +127,26 @@ angular.module('cerberus', [ 'ngCookies', 'ui.router', 'LocalStorageModule', 'mo
             s.deviceType = s.ua.device.type || 'desktop';
             s.dt = new Date(s.lastUsed).toString();
           });
-        },
-        function (resp) {
-          if (resp.status == 401)
-            auth.logout().then(function () { $state.go('login'); });
-          else
-            $scope.error = resp.data.error;
-        });
+        }, error);
+    }
+
+    function error(resp) {
+      if (resp.status == 401)
+        auth.logout().then(function () { $state.go('login'); });
+      else
+        $scope.error = resp.data.error;
     }
   }])
 
   .controller('LoginController', ['$scope', '$state', '$cookies', '$window', 'auth', function ($scope, $state, $cookies, $window, auth) {
-    auth.isLoggedIn() && $state.go('home');
+    if (auth.isLoggedIn())
+      return $state.go('home');
 
     $scope.login = function (pseudo, passwd, gotp) {
       auth.login(pseudo, passwd, gotp).then(
         function () {
           if ($scope.redirect !== undefined)
-            $window.location.href = 'https://' + $scope.redirect;
+            $window.location.assign($scope.redirect);
           else
             $state.go('home');
         },
@@ -153,11 +155,12 @@ angular.module('cerberus', [ 'ngCookies', 'ui.router', 'LocalStorageModule', 'mo
     };
     $scope.redirect = $cookies.get('redirect');
     $cookies.remove('redirect');
-    document.querySelector('[ng-model="pseudo"]').focus();
+    $window.document.querySelector('[ng-model="pseudo"]').focus();
   }])
 
   .controller('GenerateController', ['$scope', '$http', '$state', '$stateParams', 'auth', function ($scope, $http, $state, $stateParams, auth) {
-    auth.isLoggedIn() && $state.go('home');
+    if (auth.isLoggedIn())
+      return $state.go('home');
 
     $http.post('/api/geninfo', { gid: $stateParams.gid }).then(
       function (resp) {
