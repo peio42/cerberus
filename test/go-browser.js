@@ -18,7 +18,7 @@ context('Browser', () => {
       dom.reconfigure({ url: 'http://example.org' });
       global.dom = dom;
       global.window = dom.window;
-      window.crypto = { getRandomValues: buffer => require('crypto').randomFillSync(buffer) };
+      window.crypto = { getRandomValues: buffer => require('crypto').randomBytes(buffer.length) };
       window.mocha = true;
       window.beforeEach = beforeEach;
       window.afterEach = afterEach;
