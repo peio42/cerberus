@@ -1,8 +1,8 @@
-/* global describe, beforeEach, it */
+/* global context, describe, beforeEach, it */
 
 const expect = require('chai').expect;
 
-const $ = require('../lib/test.js');
+const $ = require('./helper.js');
 
 
 context('Server', () => {
