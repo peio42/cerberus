@@ -4,3 +4,4 @@
 .scannerwork/
 coverage/
 node_modules/
+root/sjcl.js
