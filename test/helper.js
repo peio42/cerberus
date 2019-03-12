@@ -25,13 +25,17 @@ const $ = {
       if (Object.prototype.hasOwnProperty.call($.mdb, col)) {
         $.mdb[col].deleteOne.resolves();
         $.mdb[col].deleteMany.resolves();
-        $.mdb[col].find.returns({ project: _p => ({ toArray: () => Promise.resolve([]) }) });
+        // $.mdb[col].find.returns([]);
         $.mdb[col].findOne.resolves();
         $.mdb[col].insertOne.resolves();
         $.mdb[col].updateOne.resolves();
       }
 
     $.users = { };
+
+    // $.mdb.sessions.find.returns({ project: _p => ({ toArray: () => Promise.resolve([]) }) });
+    $.mdb.users.find.returns({ toArray: () => Promise.resolve(Object.keys($.users).map(key => $.users[key].user)) });
+    $.mdb.sessions.find.returns({ toArray: () => Promise.resolve(Object.keys($.users).map(key => $.users[key].sessions).flat()) });
   },
 
   prvFromPassword: (pseudo, password) => {
@@ -146,7 +150,10 @@ $.reset();
 
 
 require('mongodb').MongoClient.connect = () => {
-  return Promise.resolve({ db: () => ({ collection: collection => $.mdb[collection] }) });
+  return Promise.resolve({
+    db: () => ({ collection: collection => $.mdb[collection] }),
+    close: sinon.stub()
+  });
 };
 
 
