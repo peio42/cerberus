@@ -35,7 +35,11 @@ const $ = {
 
     // $.mdb.sessions.find.returns({ project: _p => ({ toArray: () => Promise.resolve([]) }) });
     $.mdb.users.find.returns({ toArray: () => Promise.resolve(Object.keys($.users).map(key => $.users[key].user)) });
-    $.mdb.sessions.find.returns({ toArray: () => Promise.resolve(Object.keys($.users).map(key => $.users[key].sessions).flat()) });
+    $.mdb.sessions.find.returns({ toArray: () => Promise.resolve(
+      Object.keys($.users)
+        .map(key => $.users[key].sessions)
+        .reduce((r, ss) => r.concat(ss), [])
+    ) });
   },
 
   prvFromPassword: (pseudo, password) => {
