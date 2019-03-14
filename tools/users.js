@@ -63,10 +63,14 @@ function action(args) {
         g_users: client.db('cerberus').collection('g_users')
       };
       cmd.proc.apply(null, args)
-        .catch(err => { console.log(err); })
-        .finally(() => {
+        .then(() => {
           client.close();
           process.exit();
+        })
+        .catch(err => {
+          console.log(err);
+          client.close();
+          process.exit(2);
         });
     });
   }

@@ -40,10 +40,14 @@ function action(args) {
     require('mongodb').MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true }).then(client => {
       args[0] = client.db('cerberus').collection('sessions');
       cmd.proc.apply(null, args)
-        .catch(err => { console.log(err); })
-        .finally(() => {
+        .then(() => {
           client.close();
           process.exit();
+        })
+        .catch(err => {
+          console.log(err);
+          client.close();
+          process.exit(2);
         });
     });
   }
