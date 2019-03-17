@@ -35,7 +35,7 @@ context('Tools', () => {
         code.splice(0, 1);
         code = code.join('\n');
         vm.createContext(sb);
-        vm.runInContext(code, sb);
+        vm.runInContext(code, sb, 'tools/users.js');
       });
     });
 
@@ -145,7 +145,7 @@ context('Tools', () => {
         code.splice(0, 1);
         code = code.join('\n');
         vm.createContext(sb);
-        vm.runInContext(code, sb);
+        vm.runInContext(code, sb, 'tools/sessions.js');
       });
     });
 
