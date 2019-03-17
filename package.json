@@ -19,7 +19,7 @@
     "sjcl-complete": "^1.0.0"
   },
   "scripts": {
-    "test": "nyc --reporter=lcov mocha --exit --bail test/go-*.js",
+    "test": "nyc --reporter=lcov mocha --exit --bail test/go-*.js && nyc --no-clean --reporter=lcov --hook-run-in-context mocha --exit --bail test/go-tools.js",
     "install": "copyfiles -f node_modules/sjcl-complete/sjcl.js root/"
   },
   "devDependencies": {
